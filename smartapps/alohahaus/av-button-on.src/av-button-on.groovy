@@ -5,10 +5,10 @@
 
 definition(
 	name: "AV Button On",
-	namespace: "KristopherKubicki",
+	namespace: "alohahaus",
 	author: "kristopher@acm.org",
 	description: "Set an AV input based on a mode, motion or a switch",
-	category: "Convenience",
+	category: "My Apps",
 	iconUrl: "https://s3.amazonaws.com/smartapp-icons/MiscHacking/remote.png",
 	iconX2Url: "https://s3.amazonaws.com/smartapp-icons/MiscHacking/remote@2x.png"
 )
