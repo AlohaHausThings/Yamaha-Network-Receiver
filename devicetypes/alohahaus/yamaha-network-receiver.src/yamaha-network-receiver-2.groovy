@@ -16,10 +16,10 @@ preferences {
 
 
 metadata {
-  definition (name: "Yamaha Network Receiver", namespace: "alohahaus",
+  definition (name: "Yamaha Network Receiver2", namespace: "KristopherKubicki", 
   author: "kristopher@acm.org") {
     capability "Actuator"
-    capability "Switch"
+    capability "Switch" 
     capability "Polling"
     capability "Switch Level"
 
@@ -74,35 +74,35 @@ def parse(String description) {
   log.debug ("Parse got body ${body}...")
   def power = statusrsp.Main_Zone.Basic_Status.Power_Control.Power.text()
   log.debug ("$Zone Power - ${power}")
-  if(power == "On") {
+  if(power == "On") { 
     sendEvent(name: "switch", value: 'on')
   }
-  if(power != "" && power != "On") {
+  if(power != "" && power != "On") { 
     sendEvent(name: "switch", value: 'off')
   }
 
   def inputChan = statusrsp.Main_Zone.Basic_Status.Input.Input_Sel.text()
   log.debug ("$Zone Input - ${inputChan}")
-  if(inputChan != "") {
+  if(inputChan != "") { 
     sendEvent(name: "input", value: inputChan)
   }
 
   def muteLevel = statusrsp.Main_Zone.Basic_Status.Volume.Mute.text()
   log.debug ("$Zone Mute - ${muteLevel}")
-  if(muteLevel == "On") {
+  if(muteLevel == "On") { 
     sendEvent(name: "mute", value: 'muted')
   }
   if(muteLevel != "" && muteLevel != "On") {
     sendEvent(name: "mute", value: 'unmuted')
   }
 
-  if(statusrsp.Main_Zone.Basic_Status.Volume.Lvl.Val.text()) {
-    def int volLevel = statusrsp.Main_Zone.Basic_Status.Volume.Lvl.Val.toInteger() ?: -250
+  if(statusrsp.Main_Zone.Basic_Status.Volume.Lvl.Val.text()) { 
+    def int volLevel = statusrsp.Main_Zone.Basic_Status.Volume.Lvl.Val.toInteger() ?: -250        
     volLevel = ((((volLevel + 800) / 9)/5)*5).intValue()
     def int curLevel = 65
     try {
       curLevel = device.currentValue("level")
-    } catch(NumberFormatException nfe) {
+    } catch(NumberFormatException nfe) { 
       curLevel = 65
     }
     if(curLevel != volLevel) {
@@ -115,7 +115,7 @@ def parse(String description) {
 
 // Needs to round to the nearest 5
 def setLevel(val) {
-  sendEvent(name: "mute", value: "unmuted")
+  sendEvent(name: "mute", value: "unmuted")     
   sendEvent(name: "level", value: val)
 
   def scaledVal = (val * 9 - 800).toInteger()//sprintf("%d",val * 9 - 800)
@@ -140,29 +140,29 @@ def toggleMute(){
   else { mute() }
 }
 
-def mute() {
+def mute() { 
   sendEvent(name: "mute", value: "muted")
   request("<YAMAHA_AV cmd=\"PUT\"><$Zone><Volume><Mute>On</Mute></Volume></$Zone></YAMAHA_AV>")
 }
 
-def unmute() {
+def unmute() { 
   sendEvent(name: "mute", value: "unmuted")
   request("<YAMAHA_AV cmd=\"PUT\"><$Zone><Volume><Mute>Off</Mute></Volume></$Zone></YAMAHA_AV>")
 }
 
-def inputNext() {
+def inputNext() { 
 
   def cur = device.currentValue("input")
-  // modify your inputs right here!
+  // modify your inputs right here! 
   def selectedInputs = ["HDMI1","HDMI2","Pandora","HDMI1"]
 
 
   def semaphore = 0
   for(selectedInput in selectedInputs) {
-    if(semaphore == 1) {
+    if(semaphore == 1) { 
       return inputSelect(selectedInput)
     }
-    if(cur == selectedInput) {
+    if(cur == selectedInput) { 
       semaphore = 1
     }
   }
@@ -175,7 +175,7 @@ def inputSelect(channel) {
   request("<YAMAHA_AV cmd=\"PUT\"><$Zone><Input><Input_Sel>$channel</Input_Sel></Input></$Zone></YAMAHA_AV>")
 }
 
-def poll() {
+def poll() { 
   refresh()
 }
 
@@ -184,26 +184,26 @@ def refresh() {
   request("<YAMAHA_AV cmd=\"GET\"><$Zone><Basic_Status>GetParam</Basic_Status></$Zone></YAMAHA_AV>")
 }
 
-def request(body) {
+def request(body) { 
 
   def hosthex = convertIPtoHex(destIp)
   def porthex = convertPortToHex(destPort)
-  device.deviceNetworkId = "$hosthex:$porthex"
+  device.deviceNetworkId = "$hosthex:$porthex" 
 
   def hubAction = new physicalgraph.device.HubAction(
     'method': 'POST',
     'path': "/YamahaRemoteControl/ctrl",
     'body': body,
     'headers': [ HOST: "$destIp:$destPort" ]
-  )
+  ) 
 
-  hubAction
+  hubAction    
 
   hubAction
 }
 
 
-private String convertIPtoHex(ipAddress) {
+private String convertIPtoHex(ipAddress) { 
   String hex = ipAddress.tokenize( '.' ).collect {  String.format( '%02X', it.toInteger() ) }.join()
   return hex
 }
