@@ -16,8 +16,7 @@ preferences {
 
 
 metadata {
-  definition (name: "Yamaha Network Receiver", namespace: "alohahaus",
-  author: "kristopher@acm.org") {
+  definition (name: "Yamaha Network Receiver", namespace: "TangentOrgThings", author: "kristopher@acm.org") {
     capability "Actuator"
     capability "Switch"
     capability "Polling"

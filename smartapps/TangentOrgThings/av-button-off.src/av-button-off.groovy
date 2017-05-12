@@ -5,12 +5,12 @@
 
 definition(
 	name: "AV Button Off",
-	namespace: "alohahaus",
+	namespace: "TangentOrgThings",
 	author: "kristopher@acm.org",
 	description: "Set an AV input when a switch is set to off",
 	category: "My Apps",
-	iconUrl: "https://s3.amazonaws.com/smartapp-icons/MiscHacking/remote.png",
-	iconX2Url: "https://s3.amazonaws.com/smartapp-icons/MiscHacking/remote@2x.png"
+	iconUrl: "http://cdn.device-icons.smartthings.com/Electronics/electronics16-icn@2x.png",
+	iconX2Url: "http://cdn.device-icons.smartthings.com/Electronics/electronics16-icn@2x.png"
 )
 
 preferences {
